@@ -1,15 +1,21 @@
-from datetime import datetime, timedelta
+N = 12
 
-from_left = int(bin(19641010).replace('0b', '')[4:4 + 8], 2)
-to_left = int(bin(20200724).replace('0b', '')[4:4 + 8], 2)
+def move(log):
+  if len(log) == N + 1:
+    return 1
+  
+  cnt = 0
+  for diff in [(0, 1), (0, -1), (1, 0), (-1, 0)]:
+    next_pos = (log[-1][0] + diff[0], log[-1][1] + diff[1])
+    if next_pos not in log:
+      cnt += move(log + [next_pos])
+      next_pos = (log[-1][0] - diff[0], log[-1][1] - diff[1])
+      check = False
+      for p in log:
+        if next_pos[0] == p[0] and next_pos[1] == p[1]:
+          check = True
+      if check == False:
+        cnt += move(log + [next_pos])
+  return cnt
 
-for i in range(from_left, to_left + 1):
-  l = "{0:08b}".format(i)
-  r = l[::-1]
-  for m in range(0, 1 + 1):
-    value = "1001{}{}{}1001".format(l, m, r)
-    try:
-      date = datetime.strptime(str(int(value, 2)), '%Y%m%d')
-      print(date.strftime('%Y%m%d'))
-    except:
-      pass
+print(move([(0, 0)]))
