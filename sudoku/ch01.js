@@ -34,6 +34,7 @@ rl.question('x, y: ', (answer) => {
 });
 */
 
+/*
 rl.question('입력: ', (n) => {
   let n1 = n % 10;
   let n10 = Math.floor(n % 100 / 10);
@@ -51,6 +52,7 @@ rl.question('입력: ', (n) => {
 
   rl.close();
 })
+*/
 
 /*
 123456789
@@ -75,3 +77,29 @@ rl.question('입력: ', (n) => {
 123456789
 ...456789
 */
+
+const list = [];
+let string = '';
+
+async function getInput() {
+  return new Promise((resolve, reject) => {
+    // console.log('실행됨');
+    rl.question('입력: ', (n) => {
+      string += n;
+      list.push(n);
+      resolve();
+    });
+  });
+}
+
+async function main() {
+  for(let i = 0; i < 9; i++) {
+    await getInput();
+  }
+  rl.close();
+  // console.log(string);
+}
+
+main().then(() => {
+  console.log(list);
+});
