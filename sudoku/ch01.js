@@ -79,15 +79,39 @@ rl.question('입력: ', (n) => {
 */
 
 const list = [];
-let string = '';
 
+function inputs() {
+  rl.question('입력: ', (n) => {
+    if(n.length === 9 && /^[1-9.]+$/.test(n)) {
+      for(let i = 0; i < 9; i++) {
+        list.push(n);
+      }
+      rl.close();
+    } else {
+      console.log('1~9 사이의 숫자로 입력해주세요.');
+      inputs();
+    }
+    console.log(list);
+  });
+}
+
+inputs();
+
+/*
 async function getInput() {
   return new Promise((resolve, reject) => {
     // console.log('실행됨');
     rl.question('입력: ', (n) => {
-      string += n;
-      list.push(n);
-      resolve();
+      if(n === '1' || n === '2' || n === '3' || n === '4' || n === '5' || n === '6' || n === '7' || n === '8' || n === '9') {
+        // console.log('조건 만족');
+        string = n;
+        list.push(string);
+        resolve();
+      } else {
+        // console.log('조건 불만족');
+        console.log('1~9 사이의 숫자를 입력해주세요.');
+        getInput();
+      }
     });
   });
 }
@@ -103,3 +127,4 @@ async function main() {
 main().then(() => {
   console.log(list);
 });
+*/
