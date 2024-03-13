@@ -1,21 +1,53 @@
-N = 12
 
-def move(log):
-  if len(log) == N + 1:
-    return 1
+
+class TrieNode:
+  def __init__(self):
+    self.children = {}
+    self.isEnd = False
+    
+class Trie:
+  def __init__(self):
+    self.root = TrieNode()
+    
+  def insert(self, word):
+    currentNode = self.root
+    for char in word:
+      if char not in currentNode.children:
+        currentNode.children[char] = TrieNode()
+      currentNode = currentNode.children[char]
+    currentNode.isEnd = True
+    
+  def search(self, word):
+    currentNode = self.root
+    for char in word:
+      if char not in currentNode.children:
+        return False
+      currentNode = currentNode.children[char]
+    return currentNode.isEnd
   
-  cnt = 0
-  for diff in [(0, 1), (0, -1), (1, 0), (-1, 0)]:
-    next_pos = (log[-1][0] + diff[0], log[-1][1] + diff[1])
-    if next_pos not in log:
-      cnt += move(log + [next_pos])
-      next_pos = (log[-1][0] - diff[0], log[-1][1] - diff[1])
-      check = False
-      for p in log:
-        if next_pos[0] == p[0] and next_pos[1] == p[1]:
-          check = True
-      if check == False:
-        cnt += move(log + [next_pos])
-  return cnt
+  def startsWith(self, prefix):
+    currentNode = self.root
+    for char in prefix:
+      if char not in currentNode.children:
+        return False
+      currentNode = currentNode.children[char]
+    return True
 
-print(move([(0, 0)]))
+def collectAllWord(self, node = None, word = '', words = []):
+  currentNode = node or self.root
+  
+  for key, childNode in currentNode.children.items():
+    if key == '*':
+      words.append(word)
+    else:
+      self.collectAllWord(childNode, word + key, words)
+  return words
+
+def test_collectAllWord():
+  trie = Trie()
+  trie.insert('hello')
+  trie.insert('world')
+  assert trie.collectAllWord() == ['hello', 'world']
+  print('test_collectAllWord passed')
+  
+test_collectAllWord()
